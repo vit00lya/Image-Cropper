@@ -1,9 +1,16 @@
+
+
 Image Cropper
 =============
 
 Qt Widget for cropping images.
 
-![Screenshot](https://github.com/Qt-Widgets/Image-Cropper/blob/master/2.png)
+The original version was ported to the QT 6.0 version. In this demo application, the ability to select multiple images was implemented, and then save them to a folder after closing the program. It is possible to use the selected fragments for subsequent text recognition by neural networks. Additionally, it allows you to transfer the path to the image and the path to the fragment save folder via the command line.
+
+--ru
+Исходная версия была портирована на версию QT 6.0. В данном демо-приложении была реализована возможность выбора нескольких изображений, с последующим сохранением их в папке после закрытия программы. Возможно выделенные фрагменты использовать для последующего распознавания текста нейросетями. Дополнительно позволяет передавать путь к изображению и путь к папке сохранения фрагментов через командную строку.
+
+![Screenshot](https://github.com/vit00lya/Image-Cropper/master/2.png)
 
 Using:
 -------------
@@ -39,7 +46,7 @@ QPixmap croppedImage = imageCropper->cropImage();
 Build
 -------------
 
-Qt 4.6 and greater, or Qt 5.1 and greater
+Qt 6.0 and greater
 
 License
 -------------
