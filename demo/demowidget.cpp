@@ -58,6 +58,15 @@ DemoWidget::DemoWidget(QWidget* _parent) :
 	m_deleteButton->setEnabled(false); // Отключаем кнопку по умолчанию
 	connect(m_deleteButton, SIGNAL(clicked()), this, SLOT(deleteImage()));
 	
+	// Кнопки поворота изображения
+	m_rotateLeftButton = new QPushButton("Повернуть влево", this);
+	m_rotateLeftButton->setEnabled(false); // Отключаем кнопку по умолчанию
+	connect(m_rotateLeftButton, SIGNAL(clicked()), this, SLOT(rotateLeft()));
+	
+	m_rotateRightButton = new QPushButton("Повернуть вправо", this);
+	m_rotateRightButton->setEnabled(false); // Отключаем кнопку по умолчанию
+	connect(m_rotateRightButton, SIGNAL(clicked()), this, SLOT(rotateRight()));
+	
 	// Кнопка выбора папки
 	m_selectFolderButton = new QPushButton("Выбрать папку для сохранения фрагментов", this);
 	connect(m_selectFolderButton, SIGNAL(clicked()), this, SLOT(selectFolder()));
@@ -68,10 +77,12 @@ DemoWidget::DemoWidget(QWidget* _parent) :
 	// Инициализируем индекс выбранного изображения
 	m_selectedImageIndex = -1;
 	
-	// Создаем горизонтальный layout для кнопок crop и удаления
+	// Создаем горизонтальный layout для кнопок crop, удаления и поворота
 	QHBoxLayout* buttonLayout = new QHBoxLayout();
 	buttonLayout->addWidget(cropBtn);
 	buttonLayout->addWidget(m_deleteButton);
+	buttonLayout->addWidget(m_rotateLeftButton);
+	buttonLayout->addWidget(m_rotateRightButton);
 	buttonLayout->addStretch(); // Добавляем растягивающийся элемент для выравнивания кнопок по левому краю
 	
 	// Создаем горизонтальный layout 
@@ -173,8 +184,10 @@ bool DemoWidget::eventFilter(QObject* obj, QEvent* event)
 					widget->setStyleSheet("QFrame { border: 2px solid red; }");
 					// Сохраняем индекс выбранного изображения
 					m_selectedImageIndex = i;
-					// Включаем кнопку удаления
+					// Включаем кнопки удаления и поворота
 					m_deleteButton->setEnabled(true);
+					m_rotateLeftButton->setEnabled(true);
+					m_rotateRightButton->setEnabled(true);
 					return true; // Событие обработано
 				}
 			}
@@ -217,6 +230,42 @@ void DemoWidget::selectFolder()
 	}
 }
 
+void DemoWidget::rotateLeft()
+{
+	// Проверяем, выбрано ли изображение
+	if (m_selectedImageIndex >= 0 && m_selectedImageIndex < m_croppedImages.size()) {
+		// Получаем QLabel выбранного изображения
+		QLabel* selectedImage = m_croppedImages.at(m_selectedImageIndex);
+		
+		// Получаем текущее изображение
+		QPixmap pixmap = selectedImage->pixmap(Qt::ReturnByValue);
+		
+		// Поворачиваем изображение влево на 90 градусов
+		QPixmap rotatedPixmap = pixmap.transformed(QTransform().rotate(-90));
+		
+		// Устанавливаем повернутое изображение
+		selectedImage->setPixmap(rotatedPixmap);
+	}
+}
+
+void DemoWidget::rotateRight()
+{
+	// Проверяем, выбрано ли изображение
+	if (m_selectedImageIndex >= 0 && m_selectedImageIndex < m_croppedImages.size()) {
+		// Получаем QLabel выбранного изображения
+		QLabel* selectedImage = m_croppedImages.at(m_selectedImageIndex);
+		
+		// Получаем текущее изображение
+		QPixmap pixmap = selectedImage->pixmap(Qt::ReturnByValue);
+		
+		// Поворачиваем изображение вправо на 90 градусов
+		QPixmap rotatedPixmap = pixmap.transformed(QTransform().rotate(90));
+		
+		// Устанавливаем повернутое изображение
+		selectedImage->setPixmap(rotatedPixmap);
+	}
+}
+
 void DemoWidget::deleteImage()
 {
 	// Проверяем, выбрано ли изображение
@@ -236,8 +285,10 @@ void DemoWidget::deleteImage()
 		// Сбрасываем индекс выбранного изображения
 		m_selectedImageIndex = -1;
 		
-		// Отключаем кнопку удаления
+		// Отключаем кнопки удаления и поворота
 		m_deleteButton->setEnabled(false);
+		m_rotateLeftButton->setEnabled(false);
+		m_rotateRightButton->setEnabled(false);
 	}
 }
 

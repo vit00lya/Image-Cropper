@@ -30,6 +30,8 @@ protected:
 		void crop();
 		void openImage();
 		void deleteImage();
+		void rotateLeft();
+		void rotateRight();
 		void selectFolder();
 		
 	public:
@@ -45,6 +47,8 @@ private:
 	QMenuBar* m_menuBar;
 	QAction* m_openAction;
 	QPushButton* m_deleteButton;
+	QPushButton* m_rotateLeftButton;
+	QPushButton* m_rotateRightButton;
 	QPushButton* m_selectFolderButton;
 	QLabel* m_folderPathLabel;
 	QString m_currentFileName; // Имя текущего открытого файла
